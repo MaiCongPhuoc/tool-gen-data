@@ -4,15 +4,32 @@ import { Form, Field } from "react-final-form";
 const FormTable = ({ statement }: any) => {
   const onSubmit = (values: any) => {
     // Dùng lookbehind để lấy phần trong cặp dấu ngoặc đơn cuối cùng
-    const match = values.sql.match(
-      /CREATE\s+TABLE\s+\w+\s*\(([\s\S]+)\)\s*;?$/i
-    );
-    if (!match) {
+    const cleanSql = values.sql.replace(/`/g, "");
+
+    const openIdx = cleanSql.indexOf("(");
+    if (openIdx === -1) {
       alert("Không phải là câu lệnh mySQL! Vui lòng nhập lại");
       return;
     }
 
-    const columnSection = match[1];
+    let closeIdx = openIdx;
+    let depth = 0;
+    for (let i = openIdx; i < cleanSql.length; i++) {
+      const char = cleanSql[i];
+      if (char === "(") depth++;
+      else if (char === ")") depth--;
+      if (depth === 0) {
+        closeIdx = i;
+        break;
+      }
+    }
+
+    if (depth !== 0) {
+      alert("Câu lệnh không hợp lệ do lỗi dấu ngoặc.");
+      return;
+    }
+
+    const columnSection = cleanSql.slice(openIdx + 1, closeIdx).trim();
 
     // Tách các dòng cột, bỏ qua các dòng định nghĩa constraint
     const columnLines = columnSection
@@ -37,7 +54,7 @@ const FormTable = ({ statement }: any) => {
         const type = typeMatch ? typeMatch[1] : "UNKNOWN";
 
         columns.push(column);
-        types.push(type);
+        types.push(type.toLowerCase());
       }
     });
     const table = {
@@ -61,7 +78,8 @@ const FormTable = ({ statement }: any) => {
                     <textarea
                       {...input}
                       placeholder="Nhập câu lệnh mySQL..."
-                      rows={5}
+                      className="border w-96"
+                      rows={6}
                     />
                   </div>
                 )}

@@ -1,22 +1,23 @@
 import { Button } from "antd";
 import { Form, Field } from "react-final-form";
 
-const FormColumn = ({ strStatement }: any) => {
+const FormColumn = ({ strStatement, setDataGen }: any) => {
   const onSubmit = (values: any) => {
-    console.log("Giá trị gửi đi:", values);
+    setDataGen(values);
   };
-  // console.log("strStatement: ", strStatement);
   const initialValues = strStatement.columns.reduce(
-  (acc: any, key: any, index: any) => {
-    acc[key] = {
-      type: strStatement.types[index],
-      custom: '' // Thêm trường custom mặc định
-    };
-    return acc;
-  },
-  {}
-);
-  console.log("initialValues: ", initialValues);
+    (acc: any, key: any, index: any) => {
+      acc[key] = {
+        type: strStatement.types[index],
+        custom: "", // Thêm trường custom mặc định
+      };
+      if (index === 0) {
+        acc.lineNumber = 0;
+      }
+      return acc;
+    },
+    {}
+  );
   return (
     <div>
       <Form
@@ -24,9 +25,25 @@ const FormColumn = ({ strStatement }: any) => {
         initialValues={initialValues} // Giá trị mặc định ban đầu
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
+            <Field
+              name="lineNumber"
+              parse={(value) => (value === "" ? 0 : parseInt(value))}
+            >
+              {({ input, meta }) => (
+                <div className="flex justify-center">
+                  <span>Nhập số dòng</span>
+                  <input
+                    {...input}
+                    placeholder="Nhập số dòng..."
+                    className="border p-2 rounded"
+                    type="number"
+                  />
+                </div>
+              )}
+            </Field>
             {strStatement.columns.map((item: any, index: any) => {
               return (
-                <div className="flex justify-center">
+                <div className="flex justify-center" key={`${item}-${index}`}>
                   <span>{item}: </span>
                   <Field name={`${item}.type`}>
                     {({ input, meta }) => (
@@ -36,13 +53,10 @@ const FormColumn = ({ strStatement }: any) => {
                           placeholder="Nhập tên..."
                           className="border p-2 rounded"
                         />
-                        {meta.touched && meta.error && (
-                          <span>{meta.error}</span>
-                        )}
                       </div>
                     )}
                   </Field>
-                  {strStatement.types[index].includes('VARCHAR')  &&
+                  {strStatement.types[index].includes("varchar") && (
                     <Field name={`${item}.custom`}>
                       {({ input, meta }) => (
                         <div className="flex flex-col">
@@ -54,12 +68,12 @@ const FormColumn = ({ strStatement }: any) => {
                         </div>
                       )}
                     </Field>
-                  }
+                  )}
                 </div>
               );
             })}
 
-            <Button type="default" htmlType="submit">
+            <Button type="primary" htmlType="submit">
               Gen Data
             </Button>
           </form>
