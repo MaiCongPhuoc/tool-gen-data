@@ -7,12 +7,15 @@ const FormColumn = ({ strStatement }: any) => {
   };
   // console.log("strStatement: ", strStatement);
   const initialValues = strStatement.columns.reduce(
-    (acc: any, key: any, index: any) => {
-      acc[key] = strStatement.types[index];
-      return acc;
-    },
-    {}
-  );
+  (acc: any, key: any, index: any) => {
+    acc[key] = {
+      type: strStatement.types[index],
+      custom: '' // Thêm trường custom mặc định
+    };
+    return acc;
+  },
+  {}
+);
   console.log("initialValues: ", initialValues);
   return (
     <div>
@@ -25,13 +28,13 @@ const FormColumn = ({ strStatement }: any) => {
               return (
                 <div className="flex justify-center">
                   <span>{item}: </span>
-                  <Field name={item}>
+                  <Field name={`${item}.type`}>
                     {({ input, meta }) => (
                       <div>
                         <input
                           {...input}
                           placeholder="Nhập tên..."
-                          className="border"
+                          className="border p-2 rounded"
                         />
                         {meta.touched && meta.error && (
                           <span>{meta.error}</span>
@@ -39,12 +42,25 @@ const FormColumn = ({ strStatement }: any) => {
                       </div>
                     )}
                   </Field>
+                  {strStatement.types[index].includes('VARCHAR')  &&
+                    <Field name={`${item}.custom`}>
+                      {({ input, meta }) => (
+                        <div className="flex flex-col">
+                          <input
+                            {...input}
+                            placeholder="Giá trị tùy chỉnh"
+                            className="border p-2 rounded"
+                          />
+                        </div>
+                      )}
+                    </Field>
+                  }
                 </div>
               );
             })}
 
             <Button type="default" htmlType="submit">
-              Gửi
+              Gen Data
             </Button>
           </form>
         )}
