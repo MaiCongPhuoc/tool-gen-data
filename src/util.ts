@@ -5,13 +5,13 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
     case str.type.includes("varchar"):
       return randomVarchar(str, index, defaultValue);
     case str.type.includes("smallint"):
-      return randomsmallint(str);
+      return randomsmallint();
     case str.type.includes("tinyint"):
-      return randomTinyint(str);
+      return randomTinyint();
     case str.type.includes("datetime"):
-      return randomDatetime(str);
+      return randomDatetime();
     case str.type.includes("int"):
-      return randomint(str);
+      return randomint();
     case str.type.includes("decimal"):
       return randomDecimal(str);
   }
@@ -60,22 +60,22 @@ const renderZero = (num: number) => {
 };
 
 // Random value smallint
-const randomsmallint = (smallint: any) => {
+const randomsmallint = () => {
   return Math.floor(Math.random() * 1000);
 };
 
 // Random value tinyint
-const randomTinyint = (tinyint: any) => {
+const randomTinyint = () => {
   return Math.floor(Math.random() * 100);
 };
 
 // Random value datetime
-const randomDatetime = (datetime: any) => {
+const randomDatetime = () => {
   return moment().format("mm-DD-yyyy hh:mm:ss");
 };
 
 // Random value int
-const randomint = (int: any) => {
+const randomint = () => {
   return Math.floor(Math.random() * 10000);
 };
 

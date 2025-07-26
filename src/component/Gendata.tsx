@@ -2,8 +2,8 @@ import { RandomData } from "../util";
 
 const Gendata = ({ header, dataGen }: any) => {
   const valuesArray = Object.entries(dataGen)
-    .filter(([key, value]) => key !== "lineNumber")
-    .map(([key, value]) => value);
+    .filter(([key, _]) => key !== "lineNumber")
+    .map(([_, value]) => value);
 
   console.log("valuesArray: ", valuesArray);
   return (
@@ -23,7 +23,7 @@ const Gendata = ({ header, dataGen }: any) => {
           {Array.from({ length: dataGen.lineNumber }).map(
             (item: any, index: any) => {
               return (
-                <tr key={index}>
+                <tr key={`${item}-${index}`}>
                   {valuesArray.map((itemValue: any, indexValue: any) => {
                     return (
                       <td className="border">

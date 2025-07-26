@@ -24,14 +24,14 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
       <Form
         onSubmit={onSubmit}
         initialValues={initialValues} // Giá trị mặc định ban đầu
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
+        render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <div>
               <Field
                 name="lineNumber"
                 parse={(value) => (value === "" ? 0 : parseInt(value))}
               >
-                {({ input, meta }) => (
+                {({ input }) => (
                   <div className="flex justify-center items-center gap-2">
                     <span>Nhập số dòng: </span>
                     <input
@@ -51,7 +51,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                   >
                     <span>{item}: </span>
                     <Field name={`${item}.type`}>
-                      {({ input, meta }) => (
+                      {({ input }) => (
                         <div>
                           <input
                             {...input}
@@ -63,7 +63,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                     </Field>
                     {strStatement.types[index].includes("varchar") && (
                       <Field name={`${item}.custom`}>
-                        {({ input, meta }) => (
+                        {({ input }) => (
                           <div className="flex flex-col">
                             <input
                               {...input}
