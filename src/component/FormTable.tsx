@@ -70,24 +70,28 @@ const FormTable = ({ statement }: any) => {
         initialValues={{ sql: "" }} // Giá trị mặc định
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <div>
-              <label>Câu lệnh tạo bảng mySQL</label>
-              <Field name="sql">
-                {({ input }) => (
-                  <div>
-                    <textarea
-                      {...input}
-                      placeholder="Nhập câu lệnh mySQL..."
-                      className="border w-96"
-                      rows={6}
-                    />
-                  </div>
-                )}
-              </Field>
+            <div className="flex justify-center items-center">
+              <div>
+                <label className="text-2xl font-bold">
+                  Nhập câu lệnh tạo bảng mySQL
+                </label>
+                <Field name="sql">
+                  {({ input }) => (
+                    <div>
+                      <textarea
+                        {...input}
+                        placeholder="Nhập câu lệnh mySQL..."
+                        className="border w-[500px]"
+                        rows={8}
+                      />
+                    </div>
+                  )}
+                </Field>
+              </div>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
             </div>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
           </form>
         )}
       />
