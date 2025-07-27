@@ -12,7 +12,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
         custom: "", // Thêm trường custom mặc định
       };
       if (index === 0) {
-        acc.lineNumber = 0;
+        acc.lineNumber = 1;
       }
       return acc;
     },

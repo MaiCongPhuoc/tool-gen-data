@@ -20,10 +20,13 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
 // Random value varchar
 const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
   if (varchar.custom !== "") {
-    return varchar.custom + "00" + index;
+    return varchar.custom + "00" + (index + 1);
   }
   const match = varchar.type.match(/\((\d+)\)/);
   const varcharNum = Number(match[1]);
+  if (defaultValue === "tel") {
+    return randomPhoneNumber();
+  }
   if (defaultValue) {
     return defaultValue + renderZero(varcharNum) + (index + 1);
   }
@@ -36,6 +39,15 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
   if (varcharNum > 40) {
     return generateRandomUppercaseLetters(38) + "0" + (index + 1);
   }
+};
+const randomPhoneNumber = (): string => {
+  let phone = "09";
+
+  for (let i = 0; i < 8; i++) {
+    phone += Math.floor(Math.random() * 10);
+  }
+
+  return phone;
 };
 
 const generateRandomUppercaseLetters = (n: number) => {
@@ -61,22 +73,28 @@ const renderZero = (num: number) => {
 
 // Random value smallint
 const randomsmallint = () => {
-  return Math.floor(Math.random() * 1000);
+  return Math.floor(Math.random() * 1000)
+    .toString()
+    .padStart(3, "1");
 };
 
 // Random value tinyint
 const randomTinyint = () => {
-  return Math.floor(Math.random() * 100);
+  return Math.floor(Math.random() * 100)
+    .toString()
+    .padStart(2, "1");
 };
 
 // Random value datetime
 const randomDatetime = () => {
-  return moment().format("mm-DD-yyyy hh:mm:ss");
+  return moment().format("MM-DD-yyyy hh:mm:ss");
 };
 
 // Random value int
 const randomint = () => {
-  return Math.floor(Math.random() * 10000);
+  return Math.floor(Math.random() * 10000)
+    .toString()
+    .padStart(4, "1");
 };
 
 // Random value decimal
@@ -88,20 +106,31 @@ const randomDecimal = (decimal: any) => {
   }
 
   const precision = parseInt(match[1], 10); // Tổng chữ số
-  const scale = parseInt(match[2], 10); // Số chữ số sau dấu thập phân
+  const scale = parseInt(match[2], 10); // Số chữ số sau dấu chấm
 
   if (scale > precision) {
     throw new Error("scale không thể lớn hơn precision");
   }
 
-  // Tính số lớn nhất ở phần nguyên
-  const maxInteger = Math.pow(10, precision - scale) - 1;
+  const integerLength = precision - scale;
 
-  // Sinh phần nguyên và phần thập phân ngẫu nhiên
-  const integerPart = Math.floor(Math.random() * (maxInteger + 1));
-  const decimalPart = Math.floor(Math.random() * Math.pow(10, scale))
-    .toString()
-    .padStart(scale, "0");
+  // Trường hợp không cho phép phần nguyên là 0
+  const minInteger = integerLength === 1 ? 1 : 0;
+  const maxInteger = Math.pow(10, integerLength) - 1;
 
-  return parseFloat(`${integerPart}.${decimalPart}`);
+  let integerPart: number;
+
+  do {
+    integerPart = Math.floor(Math.random() * (maxInteger + 1));
+  } while (integerPart < minInteger);
+
+  let decimalPart: string;
+
+  do {
+    decimalPart = Math.floor(Math.random() * Math.pow(10, scale))
+      .toString()
+      .padStart(scale, "0");
+  } while (decimalPart.endsWith("0")); // Loại kết thúc bằng 0
+
+  return `${integerPart}.${decimalPart}`;
 };

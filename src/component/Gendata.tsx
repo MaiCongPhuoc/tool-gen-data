@@ -5,7 +5,6 @@ const Gendata = ({ header, dataGen }: any) => {
     .filter(([key, _]) => key !== "lineNumber")
     .map(([_, value]) => value);
 
-  console.log("valuesArray: ", valuesArray);
   return (
     <div className="text-center">
       <span className="text-2xl font-bold">Dữ liệu được tự tạo</span>
@@ -35,6 +34,8 @@ const Gendata = ({ header, dataGen }: any) => {
                               index,
                               header[indexValue].slice(2, 3)
                             )
+                          : header[indexValue].toLowerCase().includes("tel")
+                          ? RandomData(itemValue, index, "tel")
                           : RandomData(itemValue, index)}
                       </td>
                     );
