@@ -47,10 +47,10 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                 return (
                   <div
                     // className="flex justify-center items-center gap-2"
-                    className="grid grid-cols-4 pb-1"
+                    className="grid grid-cols-3 pb-1"
                     key={`${item}-${index}`}
                   >
-                    <div className="flex justify-end items-center gap-2">
+                    <div className="flex justify-center items-center gap-2">
                       <span>{index + 1}</span>
                     </div>
                     <div className="flex justify-center items-center gap-2">

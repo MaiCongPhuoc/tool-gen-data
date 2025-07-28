@@ -32,7 +32,7 @@ const Gendata = ({ header, dataGen }: any) => {
                           ? RandomData(
                               itemValue,
                               index,
-                              header[indexValue].slice(2, 3)
+                              header[indexValue].slice(0, 2)
                             )
                           : header[indexValue].toLowerCase().includes("tel")
                           ? RandomData(itemValue, index, "tel")
