@@ -87,7 +87,7 @@ const randomTinyint = () => {
 
 // Random value datetime
 const randomDatetime = () => {
-  return moment().format("MM-DD-yyyy hh:mm:ss");
+  return moment().format("MM/DD/yyyy hh:mm:ss");
 };
 
 // Random value int
