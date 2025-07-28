@@ -33,7 +33,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
               >
                 {({ input }) => (
                   <div className="flex justify-center items-center gap-2">
-                    <span>Nhập số dòng: </span>
+                    <span className="text-xl text-lime-600">Nhập số dòng: </span>
                     <input
                       {...input}
                       placeholder="Nhập số dòng..."
@@ -46,34 +46,42 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
               {strStatement.columns.map((item: any, index: any) => {
                 return (
                   <div
-                    className="flex justify-center items-center gap-2"
+                    // className="flex justify-center items-center gap-2"
+                    className="grid grid-cols-4 pb-1"
                     key={`${item}-${index}`}
                   >
-                    <span>{item}: </span>
-                    <Field name={`${item}.type`}>
-                      {({ input }) => (
-                        <div>
-                          <input
-                            {...input}
-                            placeholder="Nhập tên..."
-                            className="border p-2 rounded"
-                          />
-                        </div>
-                      )}
-                    </Field>
-                    {strStatement.types[index].includes("varchar") && (
-                      <Field name={`${item}.custom`}>
+                    <div className="flex justify-end items-center gap-2">
+                      <span>{index + 1}</span>
+                    </div>
+                    <div className="flex justify-center items-center gap-2">
+                      <span>{item}: </span>
+                      <Field name={`${item}.type`}>
                         {({ input }) => (
-                          <div className="flex flex-col">
+                          <div>
                             <input
                               {...input}
-                              placeholder="Giá trị tùy chỉnh"
+                              placeholder="Nhập tên..."
                               className="border p-2 rounded"
                             />
                           </div>
                         )}
                       </Field>
-                    )}
+                    </div>
+                    <div>
+                      {strStatement.types[index].includes("varchar") && (
+                        <Field name={`${item}.custom`}>
+                          {({ input }) => (
+                            <div className="flex flex-col">
+                              <input
+                                {...input}
+                                placeholder="Giá trị tùy chỉnh"
+                                className="border p-2 rounded"
+                              />
+                            </div>
+                          )}
+                        </Field>
+                      )}
+                    </div>
                   </div>
                 );
               })}
