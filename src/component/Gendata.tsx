@@ -16,7 +16,7 @@ const Gendata = ({ header, dataGen }: any) => {
             cellContent = RandomData(
                 itemValue,
                 index,
-                header[indexValue].slice(0, 2)
+                header[indexValue].slice(0, 1)
             );
         } else if (headerText && headerText.includes("tel")) {
             cellContent = RandomData(itemValue, index, "tel");
