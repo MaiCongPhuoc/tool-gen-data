@@ -5,7 +5,7 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
     case str.type.includes("varchar"):
       return randomVarchar(str, index, defaultValue);
     case str.type.includes("smallint"):
-      return randomsmallint();
+      return randomSmallint();
     case str.type.includes("tinyint"):
       return randomTinyint();
     case str.type.includes("datetime"):
@@ -36,7 +36,7 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
   if (varcharNum > 2 && varcharNum < 40) {
     return generateRandomUppercaseLetters(varcharNum - 2) + "0" + (index + 1);
   }
-  if (varcharNum > 40) {
+  if (varcharNum >= 40) {
     return generateRandomUppercaseLetters(38) + "0" + (index + 1);
   }
 };
@@ -72,7 +72,7 @@ const renderZero = (num: number) => {
 };
 
 // Random value smallint
-const randomsmallint = () => {
+const randomSmallint = () => {
   return Math.floor(Math.random() * 1000)
     .toString()
     .padStart(3, "1");
@@ -123,6 +123,11 @@ const randomDecimal = (decimal: any) => {
   do {
     integerPart = Math.floor(Math.random() * (maxInteger + 1));
   } while (integerPart < minInteger);
+
+  // Xử lý đặc biệt khi scale là 0 (chỉ cần phần nguyên)
+  if (scale === 0) {
+      return `${integerPart}.0`;
+  }
 
   let decimalPart: string;
 
