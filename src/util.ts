@@ -20,7 +20,7 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
 // Random value varchar
 const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
   if (varchar.custom !== "") {
-    return varchar.custom + "00" + (index + 1);
+    return varchar.custom + "00" + index ;
   }
   const match = varchar.type.match(/\((\d+)\)/);
   const varcharNum = Number(match[1]);
@@ -28,16 +28,13 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
     return randomPhoneNumber();
   }
   if (defaultValue) {
-    return defaultValue + renderZero(varcharNum) + (index + 1);
+    return defaultValue + renderZero(varcharNum, index);
   }
-  if (varcharNum <= 2) {
-    return generateRandomUppercaseLetters(1) + (index + 1);
-  }
-  if (varcharNum > 2 && varcharNum < 40) {
-    return generateRandomUppercaseLetters(varcharNum - 2) + "0" + (index + 1);
+  if (varcharNum < 40) {
+    return generateRandomUppercaseLetters(varcharNum, index);
   }
   if (varcharNum >= 40) {
-    return generateRandomUppercaseLetters(38) + "0" + (index + 1);
+    return generateRandomUppercaseLetters(40, index);
   }
 };
 const randomPhoneNumber = (): string => {
@@ -50,25 +47,25 @@ const randomPhoneNumber = (): string => {
   return phone;
 };
 
-const generateRandomUppercaseLetters = (n: number) => {
+const generateRandomUppercaseLetters = (num: number, index: number) => {
   let result = "";
   const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
   const charactersLength = characters.length;
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < num - String(index).length; i++) {
     const randomIndex = Math.floor(Math.random() * charactersLength);
     result += characters[randomIndex];
   }
 
-  return result;
+  return result + index;
 };
 
-const renderZero = (num: number) => {
+const renderZero = (num: number, index: number) => {
   let result = "";
-  for (let i = 0; i < num - 2; i++) {
+  for (let i = 0; i < num - 1 - String(index).length; i++) {
     result += "0";
   }
-  return result;
+  return result + index;
 };
 
 // Random value smallint
@@ -106,7 +103,7 @@ const randomDecimal = (decimal: any) => {
   }
 
   const precision = parseInt(match[1], 10); // Tổng chữ số
-  const scale = parseInt(match[2], 10); // Số chữ số sau dấu chấm
+  const scale = parseInt(match[2], 10); // Số chữ số phân thập phân
 
   if (scale > precision) {
     throw new Error("scale không thể lớn hơn precision");

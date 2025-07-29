@@ -15,13 +15,13 @@ const Gendata = ({ header, dataGen }: any) => {
         } else if (headerText && headerText.includes("_cd")) {
             cellContent = RandomData(
                 itemValue,
-                index,
+                index + 1,
                 header[indexValue].slice(0, 1)
             );
         } else if (headerText && headerText.includes("tel")) {
-            cellContent = RandomData(itemValue, index, "tel");
+            cellContent = RandomData(itemValue, index + 1, "tel");
         } else {
-            cellContent = RandomData(itemValue, index);
+            cellContent = RandomData(itemValue, index + 1);
         }
 
         return (<td className="border" key={`${itemValue}-${indexValue}`}>{cellContent}</td>);
