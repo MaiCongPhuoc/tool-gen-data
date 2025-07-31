@@ -1,5 +1,13 @@
 import moment from "moment";
 
+const PREFIX_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+const getPrefixCharByIndexTensDigit = (index: number): string => {
+    const tensDigit = Math.floor(index / 10);
+    const charIndex = tensDigit % PREFIX_CHARS.length;
+    return PREFIX_CHARS[charIndex];
+};
+
 export const RandomData = (str: any, index: number, defaultValue?: string) => {
   switch (true) {
     case str.type.includes("varchar"):
@@ -28,7 +36,13 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
     return randomPhoneNumber();
   }
   if (defaultValue) {
-    return defaultValue + renderZero(varcharNum, index);
+    const unitDigit = index % 10;
+    if(index < 10){
+      return defaultValue + renderZero(varcharNum, index);
+    } else {
+      const prefixChar = getPrefixCharByIndexTensDigit(index);
+      return prefixChar + renderZero(varcharNum) + unitDigit;
+    }
   }
   if (varcharNum < 40) {
     return generateRandomUppercaseLetters(varcharNum, index);
@@ -60,12 +74,19 @@ const generateRandomUppercaseLetters = (num: number, index: number) => {
   return result + index;
 };
 
-const renderZero = (num: number, index: number) => {
+const renderZero = (num: number, index?: number) => {
   let result = "";
-  for (let i = 0; i < num - 1 - String(index).length; i++) {
-    result += "0";
+  if(index) {
+    for (let i = 0; i < num - 1 - String(index).length; i++) {
+      result += "0";
+    }
+    return result + index;
+  } else {
+    for (let i = 0; i < num - 2; i++) {
+      result += "0";
+    }
+    return result;
   }
-  return result + index;
 };
 
 // Random value smallint
