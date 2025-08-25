@@ -66,20 +66,27 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
 
   // Gom tất cả các dòng thành 1 mảng
   const lines = [
-    `${tableName}(${headers.join(",")})`,
+    `${tableName} (${headers.join(",")})`,
     ...rows.map((row, index) => {
       const rowString =
         "    (" +
         row
-          .map((val) => (typeof val === "string" ? `"${val}"` : val))
+          .map((val) => (typeof val === "string" ? `'${val}'` : val))
           .join(", ") +
         ")";
       return index < rows.length - 1 ? rowString + "," : rowString + ";";
     }),
   ];
-
+  console.log("lines: ", lines);
   const handleCopySQL = () => {
-    const tsvString = lines.join("\n");
+    const tsvString = lines
+      .map((str: any, i: any) => {
+        if (i === 0) {
+          return `INSERT INTO ${str} VALUES \n`;
+        }
+        return `${str}\n`;
+      })
+      .join("");
     navigator.clipboard
       .writeText(tsvString)
       .then(() => toast.info("Đã copy câu lệnh mySQL"))
@@ -119,7 +126,7 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
             {idx === 0 ? (
               <>
                 <span className="text-sky-600 font-bold">INSERT INTO </span>
-                {line.replace(/^INSERT INTO /, "")}
+                {line}
                 <span className="text-sky-600 font-bold"> VALUES</span>
               </>
             ) : (
