@@ -22,6 +22,8 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
       return randomint();
     case str.type.includes("decimal"):
       return randomDecimal(str);
+    case str.type.includes("date"):
+      return randomDate();
   }
 };
 
@@ -105,7 +107,11 @@ const randomTinyint = () => {
 
 // Random value datetime
 const randomDatetime = () => {
-  return moment().format("MM/DD/yyyy hh:mm:ss");
+  return moment().format("yyyy-MM-DD hh:mm:ss");
+};
+
+const randomDate = () => {
+  return moment().format("yyyy-MM-DD");
 };
 
 // Random value int
