@@ -33,7 +33,9 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
               >
                 {({ input }) => (
                   <div className="flex justify-center items-center gap-2">
-                    <span className="text-xl text-lime-600">Nhập số dòng: </span>
+                    <span className="text-xl text-lime-600">
+                      Nhập số dòng:{" "}
+                    </span>
                     <input
                       {...input}
                       placeholder="Nhập số dòng..."

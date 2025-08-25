@@ -3,9 +3,9 @@ import moment from "moment";
 const PREFIX_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 
 const getPrefixCharByIndexTensDigit = (index: number): string => {
-    const tensDigit = Math.floor(index / 10);
-    const charIndex = tensDigit % PREFIX_CHARS.length;
-    return PREFIX_CHARS[charIndex];
+  const tensDigit = Math.floor(index / 10);
+  const charIndex = tensDigit % PREFIX_CHARS.length;
+  return PREFIX_CHARS[charIndex];
 };
 
 export const RandomData = (str: any, index: number, defaultValue?: string) => {
@@ -30,7 +30,7 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
 // Random value varchar
 const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
   if (varchar.custom !== "") {
-    return varchar.custom + "00" + index ;
+    return varchar.custom + "00" + index;
   }
   const match = varchar.type.match(/\((\d+)\)/);
   const varcharNum = Number(match[1]);
@@ -39,7 +39,7 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
   }
   if (defaultValue) {
     const unitDigit = index % 10;
-    if(index < 10){
+    if (index < 10) {
       return defaultValue + renderZero(varcharNum, index);
     } else {
       const prefixChar = getPrefixCharByIndexTensDigit(index);
@@ -78,7 +78,7 @@ const generateRandomUppercaseLetters = (num: number, index: number) => {
 
 const renderZero = (num: number, index?: number) => {
   let result = "";
-  if(index) {
+  if (index) {
     for (let i = 0; i < num - 1 - String(index).length; i++) {
       result += "0";
     }
@@ -150,7 +150,7 @@ const randomDecimal = (decimal: any) => {
 
   // Xử lý đặc biệt khi scale là 0 (chỉ cần phần nguyên)
   if (scale === 0) {
-      return `${integerPart}.0`;
+    return `${integerPart}.0`;
   }
 
   let decimalPart: string;

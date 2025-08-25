@@ -1,14 +1,18 @@
 import { Button } from "antd";
 import { Form, Field } from "react-final-form";
+import { toast, ToastContainer } from "react-toastify";
 
-const FormTable = ({ statement }: any) => {
+const FormTable = ({ statement, setDataGen }: any) => {
   const onSubmit = (values: any) => {
     // Dùng lookbehind để lấy phần trong cặp dấu ngoặc đơn cuối cùng
     const cleanSql = values.sql.replace(/`/g, "");
 
+    const tableNameMatch = cleanSql.match(/CREATE\s+TABLE\s+`?(\w+)`?/i);
+    const tableName = tableNameMatch ? tableNameMatch[1] : null;
+
     const openIdx = cleanSql.indexOf("(");
     if (openIdx === -1) {
-      alert("Không phải là câu lệnh mySQL! Vui lòng nhập lại");
+      toast.info("Không phải là câu lệnh mySQL! Vui lòng nhập lại");
       return;
     }
 
@@ -25,7 +29,7 @@ const FormTable = ({ statement }: any) => {
     }
 
     if (depth !== 0) {
-      alert("Câu lệnh không hợp lệ do lỗi dấu ngoặc.");
+      toast.info("Câu lệnh không hợp lệ do lỗi dấu ngoặc.");
       return;
     }
 
@@ -58,13 +62,24 @@ const FormTable = ({ statement }: any) => {
       }
     });
     const table = {
+      tableName,
       columns,
       types,
     };
     statement(table);
+    setDataGen("");
   };
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="light"
+      />
       <Form
         onSubmit={onSubmit}
         initialValues={{ sql: "" }} // Giá trị mặc định
