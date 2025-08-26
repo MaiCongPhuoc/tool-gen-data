@@ -96,7 +96,7 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
         return index;
       }
 
-    case varcharNum > 2 && varcharNum < 6:
+    case varcharNum > 2 && varcharNum < 7:
       // return generateRandomUppercaseLetters(varcharNum, index);
       if (index < 10) {
         return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
@@ -104,9 +104,19 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
         return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum - 1) + index;
       }
 
-    case varcharNum >= 6 && varcharNum < 30:
+    case varcharNum >= 7 && varcharNum < 30:
       // return generateRandomUppercaseLetters(varcharNum, index);
-      return "テスト_" + index;
+      if(headerText && (headerText?.length + 5) <= varcharNum) {
+        return headerText + "_テスト_" + index;
+      } else {
+        const numTemp = varcharNum - 6;
+        const headertemp = headerText?.slice(0, numTemp);
+        if(headertemp?.endsWith('_')){
+          return headertemp + "テスト_" + index;
+        } else {
+          return headertemp + "_テスト_" + index;
+        }
+      }
 
     case varcharNum >= 30:
       // return generateRandomUppercaseLetters(40, index);
