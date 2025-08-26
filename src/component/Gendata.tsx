@@ -14,19 +14,24 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
       const tds = valuesArray.map((itemValue: any, indexValue: any) => {
         let cellContent;
         const headerText = header[indexValue]?.toLowerCase();
-
         if (headerText && headerText.includes("_flg")) {
           cellContent = index % 2;
         } else if (headerText && headerText.includes("_cd")) {
           cellContent = RandomData(
             itemValue,
             index + 1,
-            header[indexValue].slice(0, 1)
+            headerText.slice(0, 2).toUpperCase()
+          );
+        } else if (headerText && headerText.includes("_id")) {
+          cellContent = RandomData(
+            itemValue,
+            index + 1,
+            headerText.slice(0, 2).toUpperCase()
           );
         } else if (headerText && headerText.includes("tel")) {
           cellContent = RandomData(itemValue, index + 1, "tel");
         } else {
-          cellContent = RandomData(itemValue, index + 1);
+          cellContent = RandomData(itemValue, index + 1,'', headerText);
         }
 
         row.push(cellContent);

@@ -8,11 +8,13 @@ const getPrefixCharByIndexTensDigit = (index: number): string => {
   return PREFIX_CHARS[charIndex];
 };
 
-export const RandomData = (str: any, index: number, defaultValue?: string) => {
+export const RandomData = (str: any, index: number, defaultValue?: string, headerText?: string) => {
   switch (true) {
     case str.type.includes("varchar"):
     case str.type.includes("char"):
-      return randomVarchar(str, index, defaultValue);
+      return randomVarchar(str, index, defaultValue, headerText);
+    case str.type.includes("blob"):
+      return headerText + "_" + renderZero(10) + index;;
     case str.type.includes("smallint"):
       return randomSmallint();
     case str.type.includes("tinyint"):
@@ -29,7 +31,8 @@ export const RandomData = (str: any, index: number, defaultValue?: string) => {
 };
 
 // Random value varchar
-const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
+const randomVarchar = (varchar: any, index: number, defaultValue?: string, headerText?: string) => {
+  console.log("headerText: ", headerText)
   if (varchar.custom !== "") {
     return varchar.custom + "0" + index;
   }
@@ -47,11 +50,21 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string) => {
       return prefixChar + renderZero(varcharNum) + unitDigit;
     }
   }
-  if (varcharNum < 40) {
-    return generateRandomUppercaseLetters(varcharNum, index);
+  if (varcharNum === 1) {
+    // return generateRandomUppercaseLetters(varcharNum, index);
+    return headerText?.slice(0, 1).toUpperCase();
   }
-  if (varcharNum >= 40) {
-    return generateRandomUppercaseLetters(40, index);
+  if (varcharNum < 6) {
+    // return generateRandomUppercaseLetters(varcharNum, index);
+    return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+  }
+  if (varcharNum >= 6 && varcharNum < 30) {
+    // return generateRandomUppercaseLetters(varcharNum, index);
+    return "テスト_" + index;
+  }
+  if (varcharNum >= 30) {
+    // return generateRandomUppercaseLetters(40, index);
+    return headerText + "_" + "テスト_" + index;
   }
 };
 const randomPhoneNumber = (): string => {
@@ -64,18 +77,18 @@ const randomPhoneNumber = (): string => {
   return phone;
 };
 
-const generateRandomUppercaseLetters = (num: number, index: number) => {
-  let result = "";
-  const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-  const charactersLength = characters.length;
+// const generateRandomUppercaseLetters = (num: number, index: number) => {
+//   let result = "";
+//   const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+//   const charactersLength = characters.length;
 
-  for (let i = 0; i < num - String(index).length; i++) {
-    const randomIndex = Math.floor(Math.random() * charactersLength);
-    result += characters[randomIndex];
-  }
+//   for (let i = 0; i < num - String(index).length; i++) {
+//     const randomIndex = Math.floor(Math.random() * charactersLength);
+//     result += characters[randomIndex];
+//   }
 
-  return result + index;
-};
+//   return result + index;
+// };
 
 const renderZero = (num: number, index?: number) => {
   let result = "";
@@ -108,11 +121,11 @@ const randomTinyint = () => {
 
 // Random value datetime
 const randomDatetime = () => {
-  return moment().format("yyyy-MM-DD hh:mm:ss");
+  return moment().subtract(1, 'days').subtract(1, 'hours').minutes(0).seconds(0).format("yyyy-MM-DD hh:mm:ss");
 };
 
 const randomDate = () => {
-  return moment().format("yyyy-MM-DD");
+  return moment().subtract(1, 'days').format("yyyy-MM-DD");
 };
 
 // Random value int
