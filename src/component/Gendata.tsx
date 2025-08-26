@@ -28,6 +28,8 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
             index + 1,
             headerText.slice(0, 1).toUpperCase()
           );
+        } else if (headerText && headerText.includes("email")) {
+          cellContent = RandomData(itemValue, index + 1, "email", headerText);
         } else if (headerText && headerText.includes("tel")) {
           cellContent = RandomData(itemValue, index + 1, "tel");
         } else {

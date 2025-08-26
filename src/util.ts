@@ -41,6 +41,9 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
   }
   const match = varchar.type.match(/\((\d+)\)/);
   const varcharNum = Number(match[1]);
+  if (headerText && defaultValue === "email") {
+    return headerText + index + "@gmail.com";
+  }
   if (defaultValue === "tel") {
     return randomPhoneNumber();
   }
