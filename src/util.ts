@@ -8,13 +8,18 @@ import moment from "moment";
 //   return PREFIX_CHARS[charIndex];
 // };
 
-export const RandomData = (str: any, index: number, defaultValue?: string, headerText?: string) => {
+export const RandomData = (
+  str: any,
+  index: number,
+  defaultValue?: string,
+  headerText?: string
+) => {
   switch (true) {
     case str.type.includes("varchar"):
     case str.type.includes("char"):
       return randomVarchar(str, index, defaultValue, headerText);
     case str.type.includes("blob"):
-      return headerText + "_" + renderZero(10) + index;;
+      return headerText + "_" + renderZero(10) + index;
     case str.type.includes("smallint"):
       return randomSmallint();
     case str.type.includes("tinyint"):
@@ -31,12 +36,17 @@ export const RandomData = (str: any, index: number, defaultValue?: string, heade
 };
 
 // Random value varchar
-const randomVarchar = (varchar: any, index: number, defaultValue?: string, headerText?: string) => {
+const randomVarchar = (
+  varchar: any,
+  index: number,
+  defaultValue?: string,
+  headerText?: string
+) => {
   if (varchar.custom !== "") {
-    if(index < 10) {
+    if (index < 10) {
       return varchar.custom + "00" + index;
     } else {
-      return varchar.custom + "0"+ index;
+      return varchar.custom + "0" + index;
     }
   }
   const match = varchar.type.match(/\((\d+)\)/);
@@ -53,8 +63,8 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
     // if (index < 10) {
     //   return defaultValue + renderZero(varcharNum, index);
     // } else {
-      // const prefixChar = getPrefixCharByIndexTensDigit(index);
-      // return prefixChar + renderZero(varcharNum - 1) + unitDigit;
+    // const prefixChar = getPrefixCharByIndexTensDigit(index);
+    // return prefixChar + renderZero(varcharNum - 1) + unitDigit;
     //   return defaultValue + renderZero(varcharNum, index);
     // }
   }
@@ -91,7 +101,9 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
     case varcharNum === 2:
       // return generateRandomUppercaseLetters(varcharNum, index);
       if (index < 10) {
-        return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+        return (
+          headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index
+        );
       } else {
         return index;
       }
@@ -99,19 +111,25 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
     case varcharNum > 2 && varcharNum < 7:
       // return generateRandomUppercaseLetters(varcharNum, index);
       if (index < 10) {
-        return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+        return (
+          headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index
+        );
       } else {
-        return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum - 1) + index;
+        return (
+          headerText?.slice(0, 1).toUpperCase() +
+          renderZero(varcharNum - 1) +
+          index
+        );
       }
 
     case varcharNum >= 7 && varcharNum < 30:
       // return generateRandomUppercaseLetters(varcharNum, index);
-      if(headerText && (headerText?.length + 5) <= varcharNum) {
+      if (headerText && headerText?.length + 5 <= varcharNum) {
         return headerText + "_テスト_" + index;
       } else {
         const numTemp = varcharNum - 6;
         const headertemp = headerText?.slice(0, numTemp);
-        if(headertemp?.endsWith('_')){
+        if (headertemp?.endsWith("_")) {
           return headertemp + "テスト_" + index;
         } else {
           return headertemp + "_テスト_" + index;
@@ -121,7 +139,6 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
     case varcharNum >= 30:
       // return generateRandomUppercaseLetters(40, index);
       return headerText + "_" + "テスト_" + index;
-
   }
 };
 const randomPhoneNumber = (): string => {
@@ -178,11 +195,16 @@ const randomTinyint = () => {
 
 // Random value datetime
 const randomDatetime = () => {
-  return moment().subtract(1, 'days').subtract(1, 'hours').minutes(0).seconds(0).format("yyyy-MM-DD hh:mm:ss");
+  return moment()
+    .subtract(1, "days")
+    .subtract(1, "hours")
+    .minutes(0)
+    .seconds(0)
+    .format("yyyy-MM-DD hh:mm:ss");
 };
 
 const randomDate = () => {
-  return moment().subtract(1, 'days').format("yyyy-MM-DD");
+  return moment().subtract(1, "days").format("yyyy-MM-DD");
 };
 
 // Random value int

@@ -33,7 +33,7 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
         } else if (headerText && headerText.includes("tel")) {
           cellContent = RandomData(itemValue, index + 1, "tel");
         } else {
-          cellContent = RandomData(itemValue, index + 1,'', headerText);
+          cellContent = RandomData(itemValue, index + 1, "", headerText);
         }
 
         row.push(cellContent);
