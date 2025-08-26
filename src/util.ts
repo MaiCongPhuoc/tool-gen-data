@@ -11,6 +11,7 @@ const getPrefixCharByIndexTensDigit = (index: number): string => {
 export const RandomData = (str: any, index: number, defaultValue?: string) => {
   switch (true) {
     case str.type.includes("varchar"):
+    case str.type.includes("char"):
       return randomVarchar(str, index, defaultValue);
     case str.type.includes("smallint"):
       return randomSmallint();

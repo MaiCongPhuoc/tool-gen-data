@@ -96,7 +96,7 @@ const FormTable = ({ statement, setDataGen }: any) => {
                       <textarea
                         {...input}
                         placeholder="Nhập câu lệnh mySQL..."
-                        className="border w-[500px]"
+                        className="border w-[800px]"
                         rows={8}
                       />
                     </div>
