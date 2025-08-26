@@ -33,7 +33,11 @@ export const RandomData = (str: any, index: number, defaultValue?: string, heade
 // Random value varchar
 const randomVarchar = (varchar: any, index: number, defaultValue?: string, headerText?: string) => {
   if (varchar.custom !== "") {
-    return varchar.custom + "0" + index;
+    if(index < 10) {
+      return varchar.custom + "00" + index;
+    } else {
+      return varchar.custom + "0"+ index;
+    }
   }
   const match = varchar.type.match(/\((\d+)\)/);
   const varcharNum = Number(match[1]);
