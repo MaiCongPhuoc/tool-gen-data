@@ -2,11 +2,11 @@ import moment from "moment";
 
 const PREFIX_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 
-const getPrefixCharByIndexTensDigit = (index: number): string => {
-  const tensDigit = Math.floor(index / 10);
-  const charIndex = tensDigit % PREFIX_CHARS.length;
-  return PREFIX_CHARS[charIndex];
-};
+// const getPrefixCharByIndexTensDigit = (index: number): string => {
+//   const tensDigit = Math.floor(index / 10);
+//   const charIndex = tensDigit % PREFIX_CHARS.length;
+//   return PREFIX_CHARS[charIndex];
+// };
 
 export const RandomData = (str: any, index: number, defaultValue?: string, headerText?: string) => {
   switch (true) {
@@ -32,7 +32,6 @@ export const RandomData = (str: any, index: number, defaultValue?: string, heade
 
 // Random value varchar
 const randomVarchar = (varchar: any, index: number, defaultValue?: string, headerText?: string) => {
-  console.log("headerText: ", headerText)
   if (varchar.custom !== "") {
     return varchar.custom + "0" + index;
   }
@@ -42,29 +41,70 @@ const randomVarchar = (varchar: any, index: number, defaultValue?: string, heade
     return randomPhoneNumber();
   }
   if (defaultValue) {
-    const unitDigit = index % 10;
-    if (index < 10) {
-      return defaultValue + renderZero(varcharNum, index);
-    } else {
-      const prefixChar = getPrefixCharByIndexTensDigit(index);
-      return prefixChar + renderZero(varcharNum) + unitDigit;
-    }
+    // const unitDigit = index % 10;
+    return defaultValue + renderZero(varcharNum, index);
+    // if (index < 10) {
+    //   return defaultValue + renderZero(varcharNum, index);
+    // } else {
+      // const prefixChar = getPrefixCharByIndexTensDigit(index);
+      // return prefixChar + renderZero(varcharNum - 1) + unitDigit;
+    //   return defaultValue + renderZero(varcharNum, index);
+    // }
   }
-  if (varcharNum === 1) {
-    // return generateRandomUppercaseLetters(varcharNum, index);
-    return headerText?.slice(0, 1).toUpperCase();
-  }
-  if (varcharNum < 6) {
-    // return generateRandomUppercaseLetters(varcharNum, index);
-    return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
-  }
-  if (varcharNum >= 6 && varcharNum < 30) {
-    // return generateRandomUppercaseLetters(varcharNum, index);
-    return "テスト_" + index;
-  }
-  if (varcharNum >= 30) {
-    // return generateRandomUppercaseLetters(40, index);
-    return headerText + "_" + "テスト_" + index;
+  // if (varcharNum === 1) {
+  //   // return generateRandomUppercaseLetters(varcharNum, index);
+  //   return headerText?.slice(0, 1).toUpperCase();
+  // }
+  // if (varcharNum === 2) {
+  //   // return generateRandomUppercaseLetters(varcharNum, index);
+  //   if(index < 10) {
+  //     return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+  //   } else {
+  //     return index;
+  //   }
+  // }
+  // if (varcharNum < 6) {
+  //   // return generateRandomUppercaseLetters(varcharNum, index);
+  //   return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+  // }
+  // if (varcharNum >= 6 && varcharNum < 30) {
+  //   // return generateRandomUppercaseLetters(varcharNum, index);
+  //   return "テスト_" + index;
+  // }
+  // if (varcharNum >= 30) {
+  //   // return generateRandomUppercaseLetters(40, index);
+  //   return headerText + "_" + "テスト_" + index;
+  // }
+
+  switch (true) {
+    case varcharNum === 1:
+      // return generateRandomUppercaseLetters(varcharNum, index);
+      return headerText?.slice(0, 1).toUpperCase();
+
+    case varcharNum === 2:
+      // return generateRandomUppercaseLetters(varcharNum, index);
+      if (index < 10) {
+        return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+      } else {
+        return index;
+      }
+
+    case varcharNum > 2 && varcharNum < 6:
+      // return generateRandomUppercaseLetters(varcharNum, index);
+      if (index < 10) {
+        return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+      } else {
+        return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum - 1) + index;
+      }
+
+    case varcharNum >= 6 && varcharNum < 30:
+      // return generateRandomUppercaseLetters(varcharNum, index);
+      return "テスト_" + index;
+
+    case varcharNum >= 30:
+      // return generateRandomUppercaseLetters(40, index);
+      return headerText + "_" + "テスト_" + index;
+
   }
 };
 const randomPhoneNumber = (): string => {

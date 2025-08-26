@@ -20,7 +20,7 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
           cellContent = RandomData(
             itemValue,
             index + 1,
-            headerText.slice(0, 2).toUpperCase()
+            headerText.slice(0, 1).toUpperCase()
           );
         } else if (headerText && headerText.includes("_id")) {
           cellContent = RandomData(
@@ -82,7 +82,6 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
       return index < rows.length - 1 ? rowString + "," : rowString + ";";
     }),
   ];
-  console.log("lines: ", lines);
   const handleCopySQL = () => {
     const tsvString = lines
       .map((str: any, i: any) => {
