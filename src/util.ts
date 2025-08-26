@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const PREFIX_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+// const PREFIX_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ";
 
 // const getPrefixCharByIndexTensDigit = (index: number): string => {
 //   const tensDigit = Math.floor(index / 10);
