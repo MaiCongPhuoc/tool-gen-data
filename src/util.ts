@@ -65,7 +65,7 @@ const randomVarchar = (
     }
   }
   if (defaultValue === "dt" && varcharNum === 8) {
-    return moment().format("yyyyMMDD");
+    return moment().subtract(1, "days").format("yyyyMMDD");
   }
   if (defaultValue === "tel") {
     return randomPhoneNumber();
