@@ -54,6 +54,13 @@ const randomVarchar = (
   if (headerText && defaultValue === "email") {
     return headerText + index + "@gmail.com";
   }
+  if (headerText && defaultValue === "cd") {
+    if(varcharNum < 10) {
+      return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
+    } else {
+      return headerText?.slice(0, 1).toUpperCase() + renderZero(8) + index;
+    }
+  }
   if (defaultValue === "tel") {
     return randomPhoneNumber();
   }
