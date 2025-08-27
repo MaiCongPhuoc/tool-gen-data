@@ -20,7 +20,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
   );
   console.log("initialValues: ", initialValues)
   return (
-    <div className="h-96 overflow-x-scroll text-center">
+    <div className="text-center">
       <span className="text-2xl font-bold">Các cột</span>
       <Form
         onSubmit={onSubmit}
@@ -46,48 +46,50 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                   </div>
                 )}
               </Field>
-              {strStatement.columns.map((item: any, index: any) => {
-                return (
-                  <div
-                    // className="flex justify-center items-center gap-2"
-                    className="grid grid-cols-3 pb-1"
-                    key={`${item}-${index}`}
-                  >
-                    <div className="flex justify-center items-center gap-2">
-                      <span>{index + 1}</span>
-                    </div>
-                    <div className="flex justify-center items-center gap-2">
-                      <span>{item}: </span>
-                      <Field name={`[${item}].type`}>
-                        {({ input }) => (
-                          <div>
-                            <input
-                              {...input}
-                              placeholder="Nhập tên..."
-                              className="border p-2 rounded"
-                            />
-                          </div>
-                        )}
-                      </Field>
-                    </div>
-                    <div>
-                      {strStatement.types[index].includes("varchar") && (
-                        <Field name={`${item}.custom`}>
+              <div className="h-96 overflow-x-scroll">
+                {strStatement.columns.map((item: any, index: any) => {
+                  return (
+                    <div
+                      // className="flex justify-center items-center gap-2"
+                      className="grid grid-cols-3 pb-1"
+                      key={`${item}-${index}`}
+                    >
+                      <div className="flex justify-center items-center gap-2">
+                        <span>{index + 1}</span>
+                      </div>
+                      <div className="flex justify-center items-center gap-2">
+                        <span>{item}: </span>
+                        <Field name={`[${item}].type`}>
                           {({ input }) => (
-                            <div className="flex flex-col">
+                            <div>
                               <input
                                 {...input}
-                                placeholder="Giá trị tùy chỉnh"
+                                placeholder="Nhập tên..."
                                 className="border p-2 rounded"
                               />
                             </div>
                           )}
                         </Field>
-                      )}
+                      </div>
+                      <div>
+                        {strStatement.types[index].includes("varchar") && (
+                          <Field name={`${item}.custom`}>
+                            {({ input }) => (
+                              <div className="flex flex-col">
+                                <input
+                                  {...input}
+                                  placeholder="Giá trị tùy chỉnh"
+                                  className="border p-2 rounded"
+                                />
+                              </div>
+                            )}
+                          </Field>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
             <Button type="primary" htmlType="submit">
               Gen Data

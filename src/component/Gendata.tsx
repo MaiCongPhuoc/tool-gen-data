@@ -74,7 +74,7 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
 
   // Gom tất cả các dòng thành 1 mảng
   const lines = [
-    `${tableName} (${headers.join(",")})`,
+    `\`${tableName}\` (\`${headers.join("`,`")}\`)`,
     ...rows.map((row, index) => {
       const rowString =
         "    (" +
