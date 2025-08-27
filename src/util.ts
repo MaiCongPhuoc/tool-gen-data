@@ -64,6 +64,9 @@ const randomVarchar = (
       return headerText?.slice(0, 1).toUpperCase() + renderZero(10) + index;
     }
   }
+  if (defaultValue === "dt" && varcharNum === 8) {
+    return moment().format("yyyyMMDD");
+  }
   if (defaultValue === "tel") {
     return randomPhoneNumber();
   }

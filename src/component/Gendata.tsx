@@ -23,6 +23,13 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
             "cd",
             headerText.slice(0, 1).toUpperCase()
           );
+        } else if (headerText && headerText.includes("_dt")) {
+          cellContent = RandomData(
+            itemValue,
+            index + 1,
+            "dt",
+            headerText.slice(0, 1).toUpperCase()
+          );
         } else if (headerText && headerText.includes("_id")) {
           cellContent = RandomData(
             itemValue,
