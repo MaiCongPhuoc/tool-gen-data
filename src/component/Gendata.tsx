@@ -108,46 +108,50 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
   };
   return (
     <div>
-      <div className="text-center overflow-y-scroll">
+      <div className="text-center">
         <span className="text-2xl font-bold">Dữ liệu được tự tạo</span>
         <Button type="primary" htmlType="submit" onClick={handleCopy}>
           Copy excel
         </Button>
-        <table>
-          <thead>
-            <tr>
-              {header.map((item: string, index: number) => (
-                <th className="p-2" key={`${item}-${index}`}>
-                  {item}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {columnTable.map((item: any, index: any) => {
-              return <tr key={`${index}`}>{item}</tr>;
-            })}
-          </tbody>
-        </table>
+        <div className="overflow-y-scroll">
+          <table>
+            <thead>
+              <tr>
+                {header.map((item: string, index: number) => (
+                  <th className="p-2" key={`${item}-${index}`}>
+                    {item}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {columnTable.map((item: any, index: any) => {
+                return <tr key={`${index}`}>{item}</tr>;
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div className="mt-12 border-t-[1px] border-slate-800 overflow-y-scroll">
+      <div className="mt-12 border-t-[1px] border-slate-800">
         <p className="text-center font-bold text-4xl mb-6">Câu lệnh SQL</p>
         <Button type="primary" htmlType="submit" onClick={handleCopySQL}>
           Copy mySQL
         </Button>
-        {lines.map((line, idx) => (
-          <p key={idx} className={idx === 0 ? "" : "ml-8"}>
-            {idx === 0 ? (
-              <>
-                <span className="text-sky-600 font-bold">INSERT INTO </span>
-                {line}
-                <span className="text-sky-600 font-bold"> VALUES</span>
-              </>
-            ) : (
-              line
-            )}
-          </p>
-        ))}
+        <div className="overflow-y-scroll">
+          {lines.map((line, idx) => (
+            <p key={idx} className={idx === 0 ? "" : "ml-8"}>
+              {idx === 0 ? (
+                <>
+                  <span className="text-sky-600 font-bold">INSERT INTO </span>
+                  {line}
+                  <span className="text-sky-600 font-bold"> VALUES</span>
+                </>
+              ) : (
+                line
+              )}
+            </p>
+          ))}
+        </div>
       </div>
       <ToastContainer
         position="top-right"
