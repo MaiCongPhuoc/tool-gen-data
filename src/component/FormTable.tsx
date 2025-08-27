@@ -50,7 +50,8 @@ const FormTable = ({ statement, setDataGen }: any) => {
     const types: string[] = [];
 
     columnLines.forEach((line: any) => {
-      const match = line.match(/^(\w+)\s+(.+)$/);
+      // const match = line.match(/^(\w+)\s+(.+)$/);
+      const match = line.match(/^([\w\.]+)\s+(.+)$/);
       if (match) {
         const [, column, rest] = match;
         // Lấy kiểu chính như VARCHAR(100), DECIMAL(10,2), ...

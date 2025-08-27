@@ -18,6 +18,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
     },
     {}
   );
+  console.log("initialValues: ", initialValues)
   return (
     <div className="h-96 overflow-x-scroll text-center">
       <span className="text-2xl font-bold">Các cột</span>
@@ -57,7 +58,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                     </div>
                     <div className="flex justify-center items-center gap-2">
                       <span>{item}: </span>
-                      <Field name={`${item}.type`}>
+                      <Field name={`[${item}].type`}>
                         {({ input }) => (
                           <div>
                             <input
