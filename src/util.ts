@@ -58,7 +58,7 @@ const randomVarchar = (
     if(varcharNum < 10) {
       return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
     } else {
-      return headerText?.slice(0, 1).toUpperCase() + renderZero(8) + index;
+      return headerText?.slice(0, 1).toUpperCase() + renderZero(10) + index;
     }
   }
   if (defaultValue === "tel") {
