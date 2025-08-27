@@ -55,6 +55,9 @@ const randomVarchar = (
     return headerText + index + "@gmail.com";
   }
   if (headerText && defaultValue === "cd") {
+    if(varcharNum === 1) {
+      return "1";
+    }
     if(varcharNum < 10) {
       return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum) + index;
     } else {
