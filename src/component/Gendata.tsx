@@ -14,9 +14,9 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
       const tds = valuesArray.map((itemValue: any, indexValue: any) => {
         let cellContent;
         const headerText = header[indexValue]?.toLowerCase();
-        if (headerText && headerText.includes("_flg")) {
+        if (headerText && headerText.endsWith("_flg")) {
           cellContent = index % 2;
-        } else if (headerText && headerText.includes("_cd")) {
+        } else if (headerText && headerText.endsWith("_cd")) {
           cellContent = RandomData(
             itemValue,
             index + 1,
@@ -30,10 +30,11 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
             "dt",
             headerText.slice(0, 1).toUpperCase()
           );
-        } else if (headerText && headerText.includes("_id")) {
+        } else if (headerText && headerText.endsWith("_id")) {
           cellContent = RandomData(
             itemValue,
             index + 1,
+            "id",
             headerText.slice(0, 1).toUpperCase()
           );
         } else if (headerText && headerText.includes("email")) {

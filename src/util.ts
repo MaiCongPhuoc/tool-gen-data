@@ -64,6 +64,16 @@ const randomVarchar = (
       return headerText?.slice(0, 1).toUpperCase() + renderZero(10) + index;
     }
   }
+  if (headerText && defaultValue === "id") {
+    if(varcharNum === 1) {
+      return "1";
+    }
+    if(varcharNum < 10) {
+      return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum, index);
+    } else {
+      return headerText?.slice(0, 1).toUpperCase() + renderZero(10,  index);
+    }
+  }
   if (defaultValue === "dt" && varcharNum === 8) {
     return moment().subtract(1, "days").format("yyyyMMDD");
   }
@@ -72,7 +82,7 @@ const randomVarchar = (
   }
   if (defaultValue) {
     // const unitDigit = index % 10;
-    return defaultValue + renderZero(varcharNum, index);
+    return headerText?.slice(0, 1).toUpperCase() + renderZero(varcharNum, index);
     // if (index < 10) {
     //   return defaultValue + renderZero(varcharNum, index);
     // } else {
