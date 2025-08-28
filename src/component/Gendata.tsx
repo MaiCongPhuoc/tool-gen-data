@@ -65,16 +65,25 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
   const handleCopy = () => {
     // Biến mảng 2D thành chuỗi (mỗi dòng cách nhau \n, mỗi cột cách nhau \t)
     const tsvString = tableData.map((row) => row.join("\t")).join("\n");
-
+    console.log("tsvString: ", tsvString)
+    try{
     // Copy vào clipboard
-    navigator.clipboard
-      .writeText(tsvString)
-      .then(() => {
-        toast.info("Đã copy excel");
-      })
-      .catch((err) => {
-        toast.error("Lỗi copy: ", err);
-      });
+      navigator.clipboard
+        .writeText(tsvString.toString())
+        .then(() => {
+          toast.info("Đã copy excel");
+        })
+        .catch((err) => {
+          toast.error("Lỗi copy: ", err);
+        });
+    }catch (err) {
+      const textarea = document.createElement("textarea");
+      textarea.value = tsvString;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.removeChild(textarea);
+    }
   };
 
   const headers = tableData[0];
