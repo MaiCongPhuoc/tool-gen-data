@@ -9,6 +9,7 @@ function App() {
     tableName: string;
     columns: String[];
     types: String[];
+    keyTable: String[];    
   }>();
   const [dataGen, setDataGen] = useState<any>();
   return (
@@ -22,6 +23,7 @@ function App() {
           header={strStatement?.columns}
           dataGen={dataGen}
           tableName={strStatement?.tableName}
+          keyTable={strStatement?.keyTable}
         />
       )}
     </>

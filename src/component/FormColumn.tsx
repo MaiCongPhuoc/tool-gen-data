@@ -18,7 +18,6 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
     },
     {}
   );
-  console.log("initialValues: ", initialValues)
   return (
     <div className="text-center">
       <span className="text-2xl font-bold">Các cột</span>

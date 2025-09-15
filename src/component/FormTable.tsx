@@ -42,8 +42,15 @@ const FormTable = ({ statement, setDataGen }: any) => {
       .filter(
         (line: any) =>
           line.length > 0 &&
-          !/^(PRIMARY|FOREIGN|UNIQUE|CHECK|CONSTRAINT|KEY)\b/i.test(line)
+          !/^(PRIMARY|FOREIGN|UNIQUE|CHECK|CONSTRAINT|KEY|PRIMARY KEY)\b/i.test(line)
       );
+    const keyTableElement = columnSection
+      .split(/,(?![^()]*\))/)
+      .map((line: any) => line.trim())
+      .filter((line: any) => line.length > 0 &&
+          /^(PRIMARY KEY|PRIMARY)\b/i.test(line));
+
+    const keyTable = keyTableElement[0].split(/[\(\)]/)[1].split(",");
 
     // Tách column và type
     const columns: string[] = [];
@@ -66,6 +73,7 @@ const FormTable = ({ statement, setDataGen }: any) => {
       tableName,
       columns,
       types,
+      keyTable
     };
     statement(table);
     setDataGen("");

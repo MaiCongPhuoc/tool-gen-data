@@ -147,7 +147,7 @@ const randomVarchar = (
 
     case varcharNum >= 7 && varcharNum < 30:
       // return generateRandomUppercaseLetters(varcharNum, index);
-      if (headerText && headerText?.length + 5 <= varcharNum) {
+      if (headerText && headerText?.length + 6 <= varcharNum) {
         return headerText + "_テスト_" + index;
       } else {
         const numTemp = varcharNum - 6;
@@ -266,7 +266,7 @@ const randomDecimal = (decimal: any) => {
 
   // Xử lý đặc biệt khi scale là 0 (chỉ cần phần nguyên)
   if (scale === 0) {
-    return `${integerPart}.0`;
+    return `${integerPart}`;
   }
 
   let decimalPart: string;

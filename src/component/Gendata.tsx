@@ -2,11 +2,13 @@ import { Button } from "antd";
 import { RandomData } from "../util";
 import { toast, ToastContainer } from "react-toastify";
 
-const Gendata = ({ header, dataGen, tableName }: any) => {
+const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
   const valuesArray = Object.entries(dataGen)
     .filter(([key, _]) => key !== "lineNumber")
     .map(([_, value]) => value);
   const tableData: any[][] = [];
+  const keyData: any = keyTable.reduce((a: any, v: any) => ({ ...a, [v]: []}), {}) 
+  console.log("keyData: ", keyData)
   const columnTable = Array.from({ length: dataGen.lineNumber }).map(
     (_, index) => {
       const row: any[] = [];
@@ -39,8 +41,8 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
           );
         } else if (headerText && headerText.includes("email")) {
           cellContent = RandomData(itemValue, index + 1, "email", headerText);
-        } else if (headerText && headerText.includes("tel")) {
-          cellContent = RandomData(itemValue, index + 1, "tel");
+        } else if (headerText && headerText.includes("_tel")) {
+          cellContent = RandomData(itemValue, index + 1, "tel", headerText);
         } else {
           cellContent = RandomData(itemValue, index + 1, "", headerText);
         }
@@ -65,25 +67,24 @@ const Gendata = ({ header, dataGen, tableName }: any) => {
   const handleCopy = () => {
     // Biến mảng 2D thành chuỗi (mỗi dòng cách nhau \n, mỗi cột cách nhau \t)
     const tsvString = tableData.map((row) => row.join("\t")).join("\n");
-    console.log("tsvString: ", tsvString)
-    try{
+    // try{
     // Copy vào clipboard
       navigator.clipboard
-        .writeText(tsvString.toString())
+        .writeText(tsvString)
         .then(() => {
           toast.info("Đã copy excel");
         })
         .catch((err) => {
           toast.error("Lỗi copy: ", err);
         });
-    }catch (err) {
-      const textarea = document.createElement("textarea");
-      textarea.value = tsvString;
-      document.body.appendChild(textarea);
-      textarea.select();
+    // }catch (err) {
+    //   const textarea = document.createElement("textarea");
+    //   textarea.value = tsvString;
+    //   document.body.appendChild(textarea);
+    //   textarea.select();
       document.execCommand("copy");
-      document.removeChild(textarea);
-    }
+    //   document.removeChild(textarea);
+    // }
   };
 
   const headers = tableData[0];
