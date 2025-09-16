@@ -8,30 +8,84 @@ import moment from "moment";
 //   return PREFIX_CHARS[charIndex];
 // };
 
+interface MyObject {
+  [key: string]: any;
+}
+
 export const RandomData = (
   str: any,
   index: number,
+  keyData: MyObject,
+  key_flg: string,
   defaultValue?: string,
-  headerText?: string
+  headerText?: string,
 ) => {
   switch (true) {
     case str.type.includes("varchar"):
     case str.type.includes("char"):
-      return randomVarchar(str, index, defaultValue, headerText);
+      const valueChar = randomVarchar(str, index, defaultValue, headerText)
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueChar);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueChar;
     case str.type.includes("blob"):
-      return headerText + "_" + renderZero(10) + index;
+      const valueBlob = headerText + "_" + renderZero(10) + index;
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueBlob);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueBlob;
     case str.type.includes("smallint"):
-      return randomSmallint();
+      const valueSmallint = randomSmallint();
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueSmallint);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueSmallint;
     case str.type.includes("tinyint"):
-      return randomTinyint();
+      const valueTinyint = randomTinyint();
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueTinyint);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueTinyint;
     case str.type.includes("datetime"):
-      return randomDatetime();
+      const valueDatetime = randomDatetime();
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueDatetime);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueDatetime;
     case str.type.includes("int"):
-      return randomint();
+      const valueInt = randomint();
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueInt);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueInt;
     case str.type.includes("decimal"):
-      return randomDecimal(str);
+      const valueDecimal = randomDecimal(str);
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueDecimal);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueDecimal;
     case str.type.includes("date"):
-      return randomDate();
+      const valueDate = randomDate();
+      if(key_flg !== "") {
+        const arr = keyData[key_flg];
+        arr.push(valueDate);
+        keyData[key_flg] = [...new Set(arr)];
+      }
+      return valueDate;
   }
 };
 

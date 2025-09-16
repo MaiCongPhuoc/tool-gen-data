@@ -2,13 +2,16 @@ import { Button } from "antd";
 import { RandomData } from "../util";
 import { toast, ToastContainer } from "react-toastify";
 
+interface MyObject {
+  [key: string]: any;
+}
+
 const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
   const valuesArray = Object.entries(dataGen)
     .filter(([key, _]) => key !== "lineNumber")
     .map(([_, value]) => value);
   const tableData: any[][] = [];
-  const keyData: any = keyTable.reduce((a: any, v: any) => ({ ...a, [v]: []}), {}) 
-  console.log("keyData: ", keyData)
+  const keyData: MyObject = keyTable.reduce((a: any, v: string) => ({ ...a, [v]: []}), {})
   const columnTable = Array.from({ length: dataGen.lineNumber }).map(
     (_, index) => {
       const row: any[] = [];
@@ -16,12 +19,15 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
       const tds = valuesArray.map((itemValue: any, indexValue: any) => {
         let cellContent;
         const headerText = header[indexValue]?.toLowerCase();
+        const key_flg = keyTable.includes(header[indexValue]) ? header[indexValue] : "";
         if (headerText && headerText.endsWith("_flg")) {
           cellContent = index % 2;
         } else if (headerText && headerText.endsWith("_cd")) {
           cellContent = RandomData(
             itemValue,
             index + 1,
+            keyData,
+            key_flg,
             "cd",
             headerText.slice(0, 1).toUpperCase()
           );
@@ -29,6 +35,8 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
           cellContent = RandomData(
             itemValue,
             index + 1,
+            keyData,
+            key_flg,
             "dt",
             headerText.slice(0, 1).toUpperCase()
           );
@@ -36,15 +44,17 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
           cellContent = RandomData(
             itemValue,
             index + 1,
+            keyData,
+            key_flg,
             "id",
             headerText.slice(0, 1).toUpperCase()
           );
         } else if (headerText && headerText.includes("email")) {
-          cellContent = RandomData(itemValue, index + 1, "email", headerText);
+          cellContent = RandomData(itemValue, index + 1, keyData, key_flg, "email", headerText);
         } else if (headerText && headerText.includes("_tel")) {
-          cellContent = RandomData(itemValue, index + 1, "tel", headerText);
+          cellContent = RandomData(itemValue, index + 1, keyData, key_flg, "tel", headerText);
         } else {
-          cellContent = RandomData(itemValue, index + 1, "", headerText);
+          cellContent = RandomData(itemValue, index + 1, keyData, key_flg, "", headerText);
         }
 
         row.push(cellContent);
@@ -89,9 +99,16 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
 
   const headers = tableData[0];
   const rows = tableData.slice(1);
-
+  const keyObj = Object.keys(keyData);
+  const lineDelete = [
+    `\`${tableName}\``,
+    ...keyObj.map((item: string, index: number) => {
+      const rowString = `${index > 0 ? "AND " : ""}\`${item}\` IN ('${keyData[item].join("', '")}')`;
+      return index < keyObj.length - 1 ? rowString + "" :  rowString + ";";
+    })
+  ];
   // Gom tất cả các dòng thành 1 mảng
-  const lines = [
+  const linesInsert = [
     `\`${tableName}\` (\`${headers.join("`,`")}\`)`,
     ...rows.map((row, index) => {
       const rowString =
@@ -104,7 +121,15 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
     }),
   ];
   const handleCopySQL = () => {
-    const tsvString = lines
+    const sqlDeleteString = lineDelete
+      .map((str: any, i: any) => {
+        if (i === 0) {
+          return `DELETE FROM ${str} WHERE \n`;
+        }
+        return `${str}\n`;
+      })
+      .join("");
+    const sqlInsertString = linesInsert
       .map((str: any, i: any) => {
         if (i === 0) {
           return `INSERT INTO ${str} VALUES \n`;
@@ -112,11 +137,15 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
         return `${str}\n`;
       })
       .join("");
+    const total = sqlDeleteString + "\n" + sqlInsertString;
     navigator.clipboard
-      .writeText(tsvString)
+      .writeText(total)
       .then(() => toast.info("Đã copy câu lệnh mySQL"))
       .catch((err) => toast.error("Lỗi copy: " + err));
   };
+  console.log("rows", rows);
+  console.log("linesInsert", linesInsert)
+  console.log("lineDelete", lineDelete)
   return (
     <div>
       <div className="text-center">
@@ -149,7 +178,23 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
           Copy mySQL
         </Button>
         <div className="overflow-y-scroll">
-          {lines.map((line, idx) => (
+          {lineDelete.map((line, idx) => (
+            <p key={idx} className={idx === 0 ? "" : "ml-8"}>
+              {idx === 0 ? (
+                <>
+                  <span className="text-sky-600 font-bold">DELETE FROM </span>
+                  {line}
+                  <span className="text-sky-600 font-bold"> WHERE</span>
+                </>
+              ) : (
+                line
+              )}
+            </p>
+          ))}
+        </div>
+        <br/>
+        <div className="overflow-y-scroll">
+          {linesInsert.map((line, idx) => (
             <p key={idx} className={idx === 0 ? "" : "ml-8"}>
               {idx === 0 ? (
                 <>
