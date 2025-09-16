@@ -49,8 +49,7 @@ const FormTable = ({ statement, setDataGen }: any) => {
       .map((line: any) => line.trim())
       .filter((line: any) => line.length > 0 &&
           /^(PRIMARY KEY|PRIMARY)\b/i.test(line));
-
-    const keyTable = keyTableElement[0].split(/[\(\)]/)[1].split(",");
+    const keyTable = keyTableElement[0]?.split(/[\(\)]/)[1].split(",");
 
     // Tách column và type
     const columns: string[] = [];

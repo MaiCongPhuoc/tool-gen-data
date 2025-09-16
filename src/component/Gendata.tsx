@@ -11,7 +11,7 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
     .filter(([key, _]) => key !== "lineNumber")
     .map(([_, value]) => value);
   const tableData: any[][] = [];
-  const keyData: MyObject = keyTable.reduce((a: any, v: string) => ({ ...a, [v]: []}), {})
+  const keyData: MyObject = keyTable?.reduce((a: any, v: string) => ({ ...a, [v]: []}), {})
   const columnTable = Array.from({ length: dataGen.lineNumber }).map(
     (_, index) => {
       const row: any[] = [];
@@ -19,7 +19,7 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
       const tds = valuesArray.map((itemValue: any, indexValue: any) => {
         let cellContent;
         const headerText = header[indexValue]?.toLowerCase();
-        const key_flg = keyTable.includes(header[indexValue]) ? header[indexValue] : "";
+        const key_flg = keyTable?.includes(header[indexValue]) ? header[indexValue] : "";
         if (headerText && headerText.endsWith("_flg")) {
           cellContent = index % 2;
         } else if (headerText && headerText.endsWith("_cd")) {
@@ -99,7 +99,7 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
 
   const headers = tableData[0];
   const rows = tableData.slice(1);
-  const keyObj = Object.keys(keyData);
+  const keyObj = Object.keys(keyData || {});
   const lineDelete = [
     `\`${tableName}\``,
     ...keyObj.map((item: string, index: number) => {
