@@ -143,9 +143,6 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
       .then(() => toast.info("Đã copy câu lệnh mySQL"))
       .catch((err) => toast.error("Lỗi copy: " + err));
   };
-  console.log("rows", rows);
-  console.log("linesInsert", linesInsert)
-  console.log("lineDelete", lineDelete)
   return (
     <div>
       <div className="text-center">
