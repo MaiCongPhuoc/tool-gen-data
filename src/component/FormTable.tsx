@@ -78,7 +78,7 @@ const FormTable = ({ statement, setDataGen }: any) => {
     setDataGen("");
   };
   return (
-    <div>
+    <div className="col-span-4">
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -93,7 +93,7 @@ const FormTable = ({ statement, setDataGen }: any) => {
         initialValues={{ sql: "" }} // Giá trị mặc định
         render={({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <div className="flex justify-center items-center">
+            <div className="text-center">
               <div>
                 <label className="text-2xl font-bold">
                   Nhập câu lệnh tạo bảng mySQL
@@ -104,16 +104,18 @@ const FormTable = ({ statement, setDataGen }: any) => {
                       <textarea
                         {...input}
                         placeholder="Nhập câu lệnh mySQL..."
-                        className="border w-[800px]"
-                        rows={8}
+                        className="border w-full"
+                        rows={17}
                       />
                     </div>
                   )}
                 </Field>
               </div>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
+              <div className="flex justify-center">
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </div>
             </div>
           </form>
         )}

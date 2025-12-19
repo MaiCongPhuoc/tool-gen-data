@@ -19,7 +19,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
     {}
   );
   return (
-    <div className="text-center">
+    <div className="col-span-8 text-center">
       <span className="text-2xl font-bold">Các cột</span>
       <Form
         onSubmit={onSubmit}
@@ -32,7 +32,7 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                 parse={(value) => (value === "" ? 0 : parseInt(value))}
               >
                 {({ input }) => (
-                  <div className="flex justify-center items-center gap-2">
+                  <div className="flex justify-center items-center gap-2 mb-2">
                     <span className="text-xl text-lime-600">
                       Nhập số dòng:{" "}
                     </span>
@@ -50,27 +50,25 @@ const FormColumn = ({ strStatement, setDataGen }: any) => {
                   return (
                     <div
                       // className="flex justify-center items-center gap-2"
-                      className="grid grid-cols-3 pb-1"
+                      className="grid grid-cols-12 pb-1"
                       key={`${item}-${index}`}
                     >
-                      <div className="flex justify-center items-center gap-2">
-                        <span>{index + 1}</span>
+                      <div className="col-span-2 flex justify-center items-center">
+                        <span className="">{index + 1}</span>
                       </div>
-                      <div className="flex justify-center items-center gap-2">
-                        <span>{item}: </span>
+                      <div className="col-span-5 flex justify-between items-center">
+                        <span className="w-1/4">{item}: </span>
                         <Field name={`[${item}].type`}>
                           {({ input }) => (
-                            <div>
                               <input
                                 {...input}
                                 placeholder="Nhập tên..."
                                 className="border p-2 rounded"
                               />
-                            </div>
                           )}
                         </Field>
                       </div>
-                      <div>
+                      <div className="col-span-5 ml-10">
                         {strStatement.types[index].includes("varchar") && (
                           <Field name={`${item}.custom`}>
                             {({ input }) => (

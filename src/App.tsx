@@ -14,10 +14,12 @@ function App() {
   const [dataGen, setDataGen] = useState<any>();
   return (
     <>
-      <FormTable statement={setStrStatement} setDataGen={setDataGen} />
-      {strStatement && (
-        <FormColumn strStatement={strStatement} setDataGen={setDataGen} />
-      )}
+      <div className="grid grid-cols-12 gap-2">
+        <FormTable statement={setStrStatement} setDataGen={setDataGen} />
+        {strStatement && (
+          <FormColumn strStatement={strStatement} setDataGen={setDataGen} />
+        )}
+      </div>
       {dataGen && (
         <Gendata
           header={strStatement?.columns}
