@@ -100,13 +100,20 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
   const headers = tableData[0];
   const rows = tableData.slice(1);
   const keyObj = Object.keys(keyData || {});
-  const lineDelete = [
-    `\`${tableName}\``,
-    ...keyObj.map((item: string, index: number) => {
-      const rowString = `${index > 0 ? "AND " : ""}\`${item}\` IN ('${keyData[item].join("', '")}')`;
-      return index < keyObj.length - 1 ? rowString + "" :  rowString + ";";
-    })
-  ];
+  const rowsDelete = new Array(rows.length).fill('');
+  // const lineDelete = [
+  //   `\`${tableName}\``,
+  //   ...keyObj.map((item: string, index: number) => {
+  //     const rowString = `${index > 0 ? " AND " : ""}\`${item}\` IN ('${keyData[item].join("', '")}')`;
+  //     return index < keyObj.length - 1 ? rowString + "" :  rowString + ";";
+  //   })
+  // ];
+  const lineDelete = rowsDelete.map((item: string, index: number) => {
+    const rowString = keyObj.map((ite: string, i:number) => {
+      return "(`" + ite + "`" + " = " + "'" + keyData[ite][index] + "'" + ")" + `${keyObj.length - 1 === i? ";": " AND "}`;
+    }).join(" ");
+    return item = rowString;
+  })
   // Gom tất cả các dòng thành 1 mảng
   const linesInsert = [
     `\`${tableName}\` (\`${headers.join("`,`")}\`)`,
@@ -121,12 +128,17 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
     }),
   ];
   const handleCopySQL = () => {
+    // const sqlDeleteString = lineDelete
+    //   .map((str: any, i: any) => {
+    //     if (i === 0) {
+    //       return `DELETE FROM ${str} WHERE \n`;
+    //     }
+    //     return `${str}\n`;
+    //   })
+    //   .join("");
     const sqlDeleteString = lineDelete
       .map((str: any, i: any) => {
-        if (i === 0) {
-          return `DELETE FROM ${str} WHERE \n`;
-        }
-        return `${str}\n`;
+        return `DELETE FROM ${tableName} WHERE ${str} \n`;
       })
       .join("");
     const sqlInsertString = linesInsert
@@ -176,16 +188,25 @@ const Gendata = ({ header, dataGen, tableName, keyTable }: any) => {
         </Button>
         <div className="overflow-y-scroll">
           {lineDelete.map((line, idx) => (
-            <p key={idx} className={idx === 0 ? "" : "ml-8"}>
-              {idx === 0 ? (
+            // <p key={idx} className={idx === 0 ? "" : "ml-8"}>
+            //   {idx === 0 ? (
+            //     <>
+            //       <span className="text-sky-600 font-bold">DELETE FROM </span>
+            //       {tableName}
+            //       <span className="text-sky-600 font-bold"> WHERE</span>
+            //       {line}
+            //     </>
+            //   ) : (
+            //     line
+            //   )}
+            // </p>
+            <p key={idx}>
                 <>
                   <span className="text-sky-600 font-bold">DELETE FROM </span>
-                  {line}
+                  {"`" + tableName + "`"}
                   <span className="text-sky-600 font-bold"> WHERE</span>
+                  {line}
                 </>
-              ) : (
-                line
-              )}
             </p>
           ))}
         </div>
